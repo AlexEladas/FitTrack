@@ -149,7 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-            pacetext.setText(String.valueOf((double)Math.round((distance/(time/60000))*100d/100d)));
+            pacetext.setText(String.valueOf((double)Math.round(((time/60000)/distance)*100d/100d)));
 
         Log.d("mspd",String.valueOf(distance));
             Log.d("mspd",String.valueOf(distance/(time/60000)));}
