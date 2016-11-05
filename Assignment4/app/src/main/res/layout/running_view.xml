@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.alexeladas.myapplication.MainActivity">
+    tools:context="com.example.alexeladas.assignment4.MapsActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stop"
-        android:id="@+id/button"
+        android:id="@+id/stopButton"
+        android:onClick="stop"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="63dp" />
@@ -42,8 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0"
-        android:id="@+id/textView3"
+        android:text=""
+        android:id="@+id/distanceText"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -52,8 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0"
-        android:id="@+id/textView4"
+        android:text=""
+        android:id="@+id/paceText"
         android:layout_alignTop="@+id/textView3"
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2" />
@@ -63,7 +65,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="map"
-        android:id="@+id/button2"
+        android:id="@+id/mapButton"
+        android:onClick="showMap"
         android:layout_above="@+id/button"
         android:layout_alignRight="@+id/textView4"
         android:layout_alignEnd="@+id/textView4" />
@@ -71,7 +74,7 @@
     <Chronometer
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chronometer"
+        android:id="@+id/timer"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

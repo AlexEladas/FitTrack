@@ -13,7 +13,10 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -30,7 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener
 {
-    private float distance;
+    private double distance;
+    private double time;
     private GoogleMap mMap;
     private boolean trackDistance;
     GoogleApiClient mGoogleApiClient;
@@ -39,12 +43,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Location mPreLocation;
     Marker mCurrLocationMarker;
     Chronometer mTimer;
-
+    ViewFlipper vf;
+    TextView dist;
+    TextView pacetext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.merged_view);
          mTimer = (Chronometer) findViewById(R.id.timer);
+        vf= (ViewFlipper) findViewById(R.id.ViewFlipper);
+        dist = (TextView) findViewById(R.id.distanceText);
+        pacetext = (TextView) findViewById(R.id.paceText);
+       // mTimer.setTextSize(20);
+       // mTimer.setFormat("00:00:00");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -91,6 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(0);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED)
         {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -99,11 +111,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void Start(View v){
+      //  setContentView(R.layout.running_view);
+        vf.showNext();
         trackDistance = true;
         mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
             @Override
             public void onChronometerTick(Chronometer chrono) {
-                long time = SystemClock.elapsedRealtime() - chrono.getBase();
+                 time = SystemClock.elapsedRealtime() - chrono.getBase();
                 int h   = (int)(time /3600000);
                 int m = (int)(time - h*3600000)/60000;
                 int s= (int)(time - h*3600000- m*60000)/1000 ;
@@ -130,8 +144,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(trackDistance)
         {
             if(mPreLocation != null){
-                distance = (mPreLocation.distanceTo(mLastLocation))/1000;}
-        Log.d("mspd",String.valueOf(distance));}
+                distance += (mPreLocation.distanceTo(mLastLocation))/1000;
+            dist.setText(String.valueOf((double)Math.round(distance*100d)/100d));
+
+            }
+
+            pacetext.setText(String.valueOf((double)Math.round((distance/(time/60000))*100d/100d)));
+
+        Log.d("mspd",String.valueOf(distance));
+            Log.d("mspd",String.valueOf(distance/(time/60000)));}
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //MarkerOptions markerOptions = new MarkerOptions();
@@ -145,9 +166,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
         //stop location updates
-        if (mGoogleApiClient != null) {
+        /*if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }
+        }*/
 
     }
 
