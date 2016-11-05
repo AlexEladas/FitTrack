@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper
+
+    android:id="@+id/ViewFlipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.example.alexeladas.FitTrack.MapsActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+  >
+
+    <include layout="@layout/activity_maps" />
+    <include layout="@layout/running_view" />
+    
+</ViewFlipper>
