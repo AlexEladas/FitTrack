@@ -104,7 +104,7 @@ public class Profile extends AppCompatActivity {
             }else if(isInteger(i)) {
                 Toast.makeText(this, "Enter possible Age", Toast.LENGTH_SHORT).show();
                 a = true;}
-            else if (i == null || Integer.valueOf(i) < 0 || Integer.valueOf(i) > 150) {//Checks if the number entered makes sense
+            else if (i == null || Integer.valueOf(i) < 0 || Integer.valueOf(i) > 130) {//Checks if the number entered makes sense
                 Toast.makeText(this, "Enter possible Age", Toast.LENGTH_SHORT).show();
                 a = true;
             }
@@ -127,7 +127,7 @@ public class Profile extends AppCompatActivity {
                     Toast.makeText(this, "Enter possible Weight", Toast.LENGTH_SHORT).show();
 
                 }
-                else if (y == null || Integer.valueOf(y) < 0 || Integer.valueOf(y) > 500 ) {
+                else if (y == null || Integer.valueOf(y) < 0 || Integer.valueOf(y) > 200 ) {
                     Toast.makeText(this, "Enter possible Weight", Toast.LENGTH_SHORT).show();
                     a = true;
                 } else {//if everything is good commit the values
@@ -146,7 +146,7 @@ public class Profile extends AppCompatActivity {
                         Toast.makeText(this, "Enter possible Height", Toast.LENGTH_SHORT).show();
                     }
 
-                    else   if (u == null || Integer.valueOf(u) < 0 || Integer.valueOf(u) > 500) {
+                    else   if (u == null || Integer.valueOf(u) < 0 || Integer.valueOf(u) > 210) {
                         Toast.makeText(this, "Enter possible Height", Toast.LENGTH_SHORT).show();
                         a = true;
                     }   else//If everything is good commit the values

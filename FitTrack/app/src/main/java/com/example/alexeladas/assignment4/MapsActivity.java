@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         vf= (ViewFlipper) findViewById(R.id.ViewFlipper);
         dist = (TextView) findViewById(R.id.distanceText);
         pacetext = (TextView) findViewById(R.id.paceText);
+
        // mTimer.setTextSize(20);
        // mTimer.setFormat("00:00:00");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -113,10 +114,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void Start(View v){
       //  setContentView(R.layout.running_view);
         vf.showNext();
+        mTimer.setTextSize(50);
         trackDistance = true;
         mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
             @Override
-            public void onChronometerTick(Chronometer chrono) {
+            public void onChronometerTick(Chronometer chrono) {// Make the timer display hh:mm:ss
                  time = SystemClock.elapsedRealtime() - chrono.getBase();
                 int h   = (int)(time /3600000);
                 int m = (int)(time - h*3600000)/60000;

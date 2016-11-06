@@ -16,9 +16,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Distance"
         android:id="@+id/textView"
+        android:layout_marginTop="136dp"
+        android:layout_below="@+id/timer"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="152dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,16 +32,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="33dp"
         android:layout_marginEnd="33dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop"
-        android:id="@+id/stopButton"
-        android:onClick="stop"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="63dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,17 +50,6 @@
         android:layout_below="@+id/textView2"
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="map"
-        android:id="@+id/mapButton"
-        android:onClick="showMap"
-        android:layout_above="@+id/stopButton"
-        android:layout_alignRight="@+id/paceText"
-        android:layout_alignEnd="@+id/paceText" />
 
     <Chronometer
         android:layout_width="wrap_content"
