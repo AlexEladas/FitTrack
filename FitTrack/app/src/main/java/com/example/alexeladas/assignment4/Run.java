@@ -9,14 +9,16 @@ public class Run {
 
     private double mDistance;
     private double mPace;
-    private long mDuration;
+    private double mDuration;
     private double mCaloriesBurn;
+    private String mDate;
     //  private String weight;
+    Run(){}
 
-    Run(double distance, long time) {
+    Run(String date, double distance, double time) {
 
 
-
+        mDate = date;
         mDistance = distance/1000;
 
         mDuration =time/60000;
@@ -26,6 +28,9 @@ public class Run {
 
     //Getters
 
+    public String getDate() {
+        return mDate;
+    }
 
     public double getDistance() {
         return mDistance;
@@ -35,7 +40,7 @@ public class Run {
         return mPace;
     }
 
-    public long getDuration() {
+    public double getDuration() {
         return mDuration;
     }
 
@@ -45,6 +50,9 @@ public class Run {
 
     //Setters
 
+    public void setDate(String b) {
+        mDate = b;
+    }
 
     public void setDistance(double b) {
         mDistance = b;
@@ -54,7 +62,7 @@ public class Run {
         mPace = c;
     }
 
-    public void setDuration(long d) {
+    public void setDuration(double d) {
         mDuration = d;
     }
 

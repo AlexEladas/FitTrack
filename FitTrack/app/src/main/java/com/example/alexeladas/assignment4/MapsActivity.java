@@ -1,5 +1,8 @@
 package com.example.alexeladas.assignment4;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -12,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +35,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Date;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener
 {
     private double distance;
@@ -46,6 +52,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ViewFlipper vf;
     TextView dist;
     TextView pacetext;
+    Button Resume;
+    Button Stop;
+    Button Save;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +63,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         vf= (ViewFlipper) findViewById(R.id.ViewFlipper);
         dist = (TextView) findViewById(R.id.distanceText);
         pacetext = (TextView) findViewById(R.id.paceText);
-
+        Resume = (Button) findViewById(R.id.resumeButton);
+        Stop = (Button) findViewById(R.id.stopButton);
+        Save = (Button) findViewById(R.id.saveButton);
        // mTimer.setTextSize(20);
        // mTimer.setFormat("00:00:00");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -133,6 +144,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mTimer.start();
 
     }
+
+    public void stop(View v){
+        //  setContentView(R.layout.running_view);
+        mTimer.stop();
+        trackDistance = false;
+        Stop.setVisibility(View.INVISIBLE);
+        MakeVisible();
+
+    }
+
+    public void resume(View v){
+        //  setContentView(R.layout.running_view);
+        MakeInvisible();
+        Stop.setVisibility(View.VISIBLE);
+
+        mTimer.start();
+        trackDistance = true;
+
+    }
+
+    public void save(View v){
+        //  setContentView(R.layout.running_view);
+        SharedPreferences sharedPreferences = getSharedPreferences("Runs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Distance",String.valueOf(distance));
+        editor.putString("Time",String.valueOf(time));
+        editor.commit();
+        DBHandler dbHandler = new DBHandler(this);
+
+        Date date = new Date();
+        long timestamp = date.getTime();
+        Date otherDate = new Date(timestamp);
+        String DateId = String.valueOf(otherDate);
+        Log.d("Date",DateId);
+        Run run = new Run(DateId,distance,time);
+        dbHandler.addRun(run);
+        startActivity(new Intent(getApplicationContext(), Data.class));
+
+
+    }
+
+
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -171,6 +224,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         /*if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }*/
+
+    }
+
+    public void MakeVisible(){// Mkae the BMI and BMR visible
+
+        //  button.setVisibility(View.VISIBLE);
+        Resume.setVisibility(View.VISIBLE);
+        Save.setVisibility(View.VISIBLE);
+
+    }
+
+    public void MakeInvisible(){ //Make the BMI and BMR invisible
+        // button.setVisibility(View.VISIBLE);
+        Resume.setVisibility(View.INVISIBLE);
+        Save.setVisibility(View.INVISIBLE);
 
     }
 
