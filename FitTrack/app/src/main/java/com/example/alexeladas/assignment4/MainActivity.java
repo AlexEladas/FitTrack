@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Profile.class));
 
     }
+    void goToDataActivity() {
+        startActivity(new Intent(getApplicationContext(), Data.class));
+
+    }
     public void run(View v){goToMapsActivity();}
     public void profileClick(View v){goToProfilePage();}
+    public void past(View v){goToDataActivity();}
 }

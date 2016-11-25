@@ -9,23 +9,34 @@ public class Run {
 
     private double mDistance;
     private double mPace;
-    private double mDuration;
+    private String mDuration;
     private double mCaloriesBurn;
     private String mDate;
     //  private String weight;
     Run(){}
 
-    Run(String date, double distance, double time) {
+    Run(String date, double distance, double time, double weight) {
 
 
         mDate = date;
-        mDistance = distance/1000;
+        mDistance = (double)Math.round(distance*100d)/100d;
 
-        mDuration =time/60000;
-        mPace = mDistance/mDuration ;
+        mDuration =formatTime(time);
+        mPace = (double)Math.round((mDistance/(time/60000))*100d)/100d ;
+        mCaloriesBurn= weight*0.75*mDistance;
 
     }
 
+    public String formatTime(double time){
+
+        int h   = (int)(time /3600000);
+        int m = (int)(time - h*3600000)/60000;
+        int s= (int)(time - h*3600000- m*60000)/1000 ;
+        String hh = h < 10 ? "0"+h: h+"";
+        String mm = m < 10 ? "0"+m: m+"";
+        String ss = s < 10 ? "0"+s: s+"";
+        return (hh+":"+mm+":"+ss) ;
+    }
     //Getters
 
     public String getDate() {
@@ -40,7 +51,7 @@ public class Run {
         return mPace;
     }
 
-    public double getDuration() {
+    public String getDuration() {
         return mDuration;
     }
 
@@ -62,7 +73,7 @@ public class Run {
         mPace = c;
     }
 
-    public void setDuration(double d) {
+    public void setDuration(String d) {
         mDuration = d;
     }
 

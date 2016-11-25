@@ -41,12 +41,20 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Profile"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Data"></activity>
+        <activity
+            android:name=".Data"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".ForegroundService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

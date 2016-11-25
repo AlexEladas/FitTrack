@@ -41,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
     private double distance;
     private double time;
+    private long lastStop ;
     private GoogleMap mMap;
     private boolean trackDistance;
     GoogleApiClient mGoogleApiClient;
@@ -66,6 +67,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Resume = (Button) findViewById(R.id.resumeButton);
         Stop = (Button) findViewById(R.id.stopButton);
         Save = (Button) findViewById(R.id.saveButton);
+        MakeInvisible();
+        lastStop = 0;
        // mTimer.setTextSize(20);
        // mTimer.setFormat("00:00:00");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -127,10 +130,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         vf.showNext();
         mTimer.setTextSize(50);
         trackDistance = true;
+        Log.d("Resume","hello");
         mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
             @Override
             public void onChronometerTick(Chronometer chrono) {// Make the timer display hh:mm:ss
-                 time = SystemClock.elapsedRealtime() - chrono.getBase();
+
+                time = SystemClock.elapsedRealtime()-chrono.getBase();
+
                 int h   = (int)(time /3600000);
                 int m = (int)(time - h*3600000)/60000;
                 int s= (int)(time - h*3600000- m*60000)/1000 ;
@@ -140,14 +146,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 chrono.setText(hh+":"+mm+":"+ss);
             }
         });
-        mTimer.setBase(SystemClock.elapsedRealtime());
+        if(lastStop==0){
+            Log.d("sup","hello");
+        mTimer.setBase(SystemClock.elapsedRealtime());}
+
         mTimer.start();
 
     }
 
     public void stop(View v){
         //  setContentView(R.layout.running_view);
+
+        lastStop =   SystemClock.elapsedRealtime()-mTimer.getBase() ;
         mTimer.stop();
+
         trackDistance = false;
         Stop.setVisibility(View.INVISIBLE);
         MakeVisible();
@@ -158,6 +170,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //  setContentView(R.layout.running_view);
         MakeInvisible();
         Stop.setVisibility(View.VISIBLE);
+
+
+            mTimer.setBase(  SystemClock.elapsedRealtime() - lastStop);
+
 
         mTimer.start();
         trackDistance = true;
@@ -178,7 +194,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Date otherDate = new Date(timestamp);
         String DateId = String.valueOf(otherDate);
         Log.d("Date",DateId);
-        Run run = new Run(DateId,distance,time);
+
+
+
+        SharedPreferences sharedPreferences2 = getSharedPreferences("Preference", Context.MODE_PRIVATE);
+        String weight = sharedPreferences2.getString("Weight",null);
+
+
+        Run run = new Run(DateId,(double)Math.round(distance*100d)/100d,time,Double.valueOf(weight));
         dbHandler.addRun(run);
         startActivity(new Intent(getApplicationContext(), Data.class));
 
@@ -199,15 +222,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(trackDistance)
         {
             if(mPreLocation != null){
-                distance += (mPreLocation.distanceTo(mLastLocation))/1000;
+                if((mPreLocation.distanceTo(mLastLocation))<10.5){
+                distance += (mPreLocation.distanceTo(mLastLocation))/1000;}
             dist.setText(String.valueOf((double)Math.round(distance*100d)/100d));
 
             }
-
+            if((double)Math.round(((time/60000)/distance)*100d/100d)>30){
+                pacetext.setText("0.0");
+            }else
             pacetext.setText(String.valueOf((double)Math.round(((time/60000)/distance)*100d/100d)));
 
-        Log.d("mspd",String.valueOf(distance));
-            Log.d("mspd",String.valueOf(distance/(time/60000)));}
+        Log.d("distance",String.valueOf(distance));
+            Log.d("pace",String.valueOf(distance/(time/60000)));}
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //MarkerOptions markerOptions = new MarkerOptions();

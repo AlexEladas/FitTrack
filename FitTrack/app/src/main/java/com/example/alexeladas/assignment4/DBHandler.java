@@ -87,7 +87,7 @@ public class DBHandler extends SQLiteOpenHelper
 
                 run.setDistance(Double.parseDouble(cursor.getString(1)));
                 run.setPace(Double.parseDouble(cursor.getString(2)));
-                run.setDuration(Double.valueOf(cursor.getString(3)));
+                run.setDuration(cursor.getString(3));
                 run.setCaloriesBurn(Double.parseDouble(cursor.getString(4)));
 
                 runList.add(run);
@@ -121,11 +121,11 @@ public class DBHandler extends SQLiteOpenHelper
 
     }
 
-    public double retrieveDuration(String id)
+    public String retrieveDuration(String id)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
-        double duration= 0 ;
+        String duration= "" ;
 
         try{
             cursor = db.rawQuery("SELECT " + KEY_DURATION +" FROM " + TABLE_RUNS +" WHERE " + KEY_ID +"=?", new String[] {id + ""});
@@ -133,7 +133,7 @@ public class DBHandler extends SQLiteOpenHelper
             if(cursor.getCount() > 0) {
 
                 cursor.moveToFirst();
-                duration = Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_DURATION)));
+                duration = (cursor.getString(cursor.getColumnIndex(KEY_DURATION)));
             }
 
             return duration;
