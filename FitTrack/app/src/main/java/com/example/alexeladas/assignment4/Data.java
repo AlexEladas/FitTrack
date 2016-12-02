@@ -97,6 +97,6 @@ public class Data extends AppCompatActivity {
             //setContentView(sv);
     }
     public void onBackPressed(){
-        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 }

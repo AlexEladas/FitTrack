@@ -1,9 +1,12 @@
 package com.example.alexeladas.assignment4;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,8 +21,22 @@ public class MainActivity extends AppCompatActivity {
         setupUI();
     }
 
+    protected void onStart() {
 
 
+        super.onStart();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Preference", Context.MODE_PRIVATE);
+        String name = sharedPreferences.getString("Name",null);
+
+        if(name == null)
+            goToProfileActivity();
+
+    }
+    void goToProfileActivity() {
+        startActivity(new Intent(getApplicationContext(), Profile.class));
+
+    }
 
     protected void setupUI()
     {

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.SystemClock;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -56,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button Resume;
     Button Stop;
     Button Save;
+    public static String STARTFOREGROUND_ACTION = "com.truiton.foregroundservice.action.startforeground";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+    @Override
+    protected void onStop(){
+
+        vf.showPrevious();
+        super.onStop();
+
+
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -129,6 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
       //  setContentView(R.layout.running_view);
         vf.showNext();
         mTimer.setTextSize(50);
+        distance = 0;
         trackDistance = true;
         Log.d("Resume","hello");
         mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
@@ -151,6 +162,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mTimer.setBase(SystemClock.elapsedRealtime());}
 
         mTimer.start();
+        Intent startIntent = new Intent(MapsActivity.this, ForegroundService.class);
+        startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
+        startService(startIntent);
 
     }
 
@@ -205,6 +219,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dbHandler.addRun(run);
         startActivity(new Intent(getApplicationContext(), Data.class));
 
+        Intent stopIntent = new Intent(MapsActivity.this, ForegroundService.class);
+        stopIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+        startService(stopIntent);
 
     }
 
